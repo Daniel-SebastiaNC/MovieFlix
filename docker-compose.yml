@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: movieflix-conteiner
+    environment:
+      POSTGRES_DB: movieflix
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5431:5432"
+    restart: always
