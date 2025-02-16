@@ -2,8 +2,9 @@ package br.com.movieflix.controller;
 
 import br.com.movieflix.controller.request.CategoryRequest;
 import br.com.movieflix.controller.response.CategoryResponse;
-import br.com.movieflix.entity.Category;
 import br.com.movieflix.service.CategoryService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,17 +30,28 @@ public class CategoryController {
     }
 
     @PostMapping("/add")
-    public CategoryResponse saveCategory(@RequestBody CategoryRequest categoryRequest){
-        return categoryService.saveCategory(categoryRequest);
+    public ResponseEntity<CategoryResponse> saveCategory(@RequestBody CategoryRequest categoryRequest){
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.saveCategory(categoryRequest));
     }
 
     @GetMapping("/{id}")
-    public CategoryResponse getById(@PathVariable Long id){
-        return categoryService.findCategoryById(id);
+    public ResponseEntity<?> getById(@PathVariable Long id){
+        CategoryResponse categoryById = categoryService.findCategoryById(id);
+        if (categoryById != null) {
+            return ResponseEntity.ok(categoryById);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category with id " + id + " not founded");
+
     }
 
     @DeleteMapping("delete/{id}")
-    public void deleteById(@PathVariable Long id){
-        categoryService.deleteById(id);
+    public ResponseEntity<?> deleteById(@PathVariable Long id){
+        CategoryResponse categoryById = categoryService.findCategoryById(id);
+        if (categoryById != null) {
+            categoryService.deleteById(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Category with id " + id + " was deleted");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category with id " + id + " not founded");
+
     }
 }
