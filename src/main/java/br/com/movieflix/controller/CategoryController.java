@@ -3,6 +3,7 @@ package br.com.movieflix.controller;
 import br.com.movieflix.controller.request.CategoryRequest;
 import br.com.movieflix.controller.response.CategoryResponse;
 import br.com.movieflix.service.CategoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,18 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/movieflix/category")
+@RequiredArgsConstructor
 public class CategoryController {
 
     private CategoryService categoryService;
-
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
-
-    /*@GetMapping("/hello")
-    public String hello(){
-        return "Hello World";
-    }*/
 
     @GetMapping("/all")
     public ResponseEntity<List<CategoryResponse>> getAllCategorys(){
