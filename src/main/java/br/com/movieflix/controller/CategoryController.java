@@ -25,8 +25,8 @@ public class CategoryController {
     }*/
 
     @GetMapping("/all")
-    public List<CategoryResponse> getAllCategorys(){
-        return categoryService.findAllCategorys();
+    public ResponseEntity<List<CategoryResponse>> getAllCategorys(){
+        return ResponseEntity.ok(categoryService.findAllCategorys());
     }
 
     @PostMapping("/add")
