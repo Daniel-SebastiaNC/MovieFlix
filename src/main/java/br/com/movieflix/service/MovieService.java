@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequestMapping("/movieflix/movie")
@@ -49,6 +50,33 @@ public class MovieService {
 
     public MovieResponse getMovieById(Long id){
         return movieRepository.findById(id).map(MovieMapper::toMovieResponse).orElse(null);
+    }
+
+    public MovieResponse updateMovie(Long id, MovieRequest movieRequest){
+        Movie movie = movieRepository.findById(id).orElse(null);
+
+        Movie request = MovieMapper.toMovie(movieRequest);
+        if (movie != null) {
+            //Setter
+            movie.setTitle(movieRequest.title());
+            movie.setDescription(movieRequest.description());
+            movie.setReleaseDate(movieRequest.releaseDate());
+            movie.setRating(movieRequest.rating());
+
+            movie.getCategories().clear();
+            movie.setCategories(this.findCategories(request.getCategories()));
+
+            movie.getStreamings().clear();
+            movie.setStreamings(this.findstreamings(request.getStreamings()));
+
+            //Save and Return
+            Movie saveMovie = movieRepository.save(movie);
+            return MovieMapper.toMovieResponse(saveMovie);
+        }
+        return null;
+
+
+
     }
 
     private List<Category> findCategories(List<Category> categories){

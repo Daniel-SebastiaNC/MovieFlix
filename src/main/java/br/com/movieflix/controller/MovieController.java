@@ -36,4 +36,13 @@ public class MovieController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie with id " + id + " not founded");
 
     }
+
+    @PutMapping("/alter/{id}")
+    public  ResponseEntity<?> updateMovie(@PathVariable Long id, @RequestBody MovieRequest movieRequest){
+        MovieResponse movieResponse = service.updateMovie(id, movieRequest);
+        if (movieResponse != null) {
+            return ResponseEntity.ok(movieResponse);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie with id " + id + " not founded");
+    }
 }
