@@ -47,6 +47,10 @@ public class MovieService {
                 .toList();
     }
 
+    public MovieResponse getMovieById(Long id){
+        return movieRepository.findById(id).map(MovieMapper::toMovieResponse).orElse(null);
+    }
+
     private List<Category> findCategories(List<Category> categories){
         List<Category> categoryFound = new ArrayList<>();
 

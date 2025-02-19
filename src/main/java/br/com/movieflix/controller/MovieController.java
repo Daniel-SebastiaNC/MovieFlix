@@ -26,4 +26,14 @@ public class MovieController {
     public ResponseEntity<List<MovieResponse>> getAllMovies(){
         return ResponseEntity.ok(service.getAllMovies());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getMovieById(@PathVariable Long id){
+        MovieResponse movieResponse = service.getMovieById(id);
+        if (movieResponse != null) {
+            return ResponseEntity.ok(movieResponse);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie with id " + id + " not founded");
+
+    }
 }
