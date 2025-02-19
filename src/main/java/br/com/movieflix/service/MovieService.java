@@ -74,9 +74,10 @@ public class MovieService {
             return MovieMapper.toMovieResponse(saveMovie);
         }
         return null;
+    }
 
-
-
+    public void deleteMovieById(Long id){
+        movieRepository.deleteById(id);
     }
 
     private List<Category> findCategories(List<Category> categories){

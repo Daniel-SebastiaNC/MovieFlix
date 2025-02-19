@@ -38,10 +38,19 @@ public class MovieController {
     }
 
     @PutMapping("/alter/{id}")
-    public  ResponseEntity<?> updateMovie(@PathVariable Long id, @RequestBody MovieRequest movieRequest){
+    public ResponseEntity<?> updateMovie(@PathVariable Long id, @RequestBody MovieRequest movieRequest){
         MovieResponse movieResponse = service.updateMovie(id, movieRequest);
         if (movieResponse != null) {
             return ResponseEntity.ok(movieResponse);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie with id " + id + " not founded");
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteMovieById(@PathVariable Long id){
+        MovieResponse movieById = service.getMovieById(id);
+        if (movieById != null){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie with id " + id + " not founded");
     }
