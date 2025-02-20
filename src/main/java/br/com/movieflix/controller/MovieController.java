@@ -37,6 +37,15 @@ public class MovieController {
 
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<?> getByMovieByCategorys(@RequestParam Long category){
+        List<MovieResponse> byMovieByCategorys = service.getByMovieByCategorys(category);
+        if (byMovieByCategorys != null) {
+            return ResponseEntity.ok(byMovieByCategorys);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie with category " + category + " not founded");
+    }
+
     @PutMapping("/alter/{id}")
     public ResponseEntity<?> updateMovie(@PathVariable Long id, @RequestBody MovieRequest movieRequest){
         MovieResponse movieResponse = service.updateMovie(id, movieRequest);

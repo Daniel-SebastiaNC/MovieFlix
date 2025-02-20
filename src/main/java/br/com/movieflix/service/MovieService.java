@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequestMapping("/movieflix/movie")
@@ -50,6 +49,11 @@ public class MovieService {
 
     public MovieResponse getMovieById(Long id){
         return movieRepository.findById(id).map(MovieMapper::toMovieResponse).orElse(null);
+    }
+
+    public List<MovieResponse> getByMovieByCategorys(Long categoryId){
+        List<Movie> movieByCategories = movieRepository.findMovieByCategories(List.of(Category.builder().id(categoryId).build()));
+        return movieByCategories.stream().map(MovieMapper::toMovieResponse).toList();
     }
 
     public MovieResponse updateMovie(Long id, MovieRequest movieRequest){
