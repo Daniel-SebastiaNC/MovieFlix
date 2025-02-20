@@ -1,4 +1,6 @@
 package br.com.movieflix.controller.request;
 
-public class UserRequest {
+public record UserRequest(String name,
+                          String email,
+                          String password) {
 }
