@@ -3,6 +3,7 @@ package br.com.movieflix.controller;
 import br.com.movieflix.controller.request.CategoryRequest;
 import br.com.movieflix.controller.response.CategoryResponse;
 import br.com.movieflix.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class CategoryController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<CategoryResponse> saveCategory(@RequestBody CategoryRequest categoryRequest){
+    public ResponseEntity<CategoryResponse> saveCategory(@Valid @RequestBody CategoryRequest categoryRequest){
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.saveCategory(categoryRequest));
     }
 

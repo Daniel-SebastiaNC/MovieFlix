@@ -1,4 +1,6 @@
 package br.com.movieflix.controller.request;
 
-public record CategoryRequest(String name) {
+import jakarta.validation.constraints.NotEmpty;
+
+public record CategoryRequest(@NotEmpty(message = "Nome obrigatorio") String name) {
 }

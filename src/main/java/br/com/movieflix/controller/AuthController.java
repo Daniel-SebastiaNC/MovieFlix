@@ -6,11 +6,13 @@ import br.com.movieflix.controller.request.UserRequest;
 import br.com.movieflix.controller.response.UserLoginResponse;
 import br.com.movieflix.controller.response.UserRegisterResponse;
 import br.com.movieflix.entity.User;
+import br.com.movieflix.exception.UsernameOrPasswordInvaldException;
 import br.com.movieflix.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,13 +36,18 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest) {
-        UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(userLoginRequest.email(), userLoginRequest.password());
-        Authentication authentication = authenticationManager.authenticate(userAndPass);
+        try {
+            UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(userLoginRequest.email(), userLoginRequest.password());
+            Authentication authentication = authenticationManager.authenticate(userAndPass);
 
-        User user = (User) authentication.getPrincipal();
+            User user = (User) authentication.getPrincipal();
 
-        String token = tokenService.generateToken(user);
-        return ResponseEntity.ok(new UserLoginResponse(token));
+            String token = tokenService.generateToken(user);
+            return ResponseEntity.ok(new UserLoginResponse(token));
+
+        } catch (BadCredentialsException exception){
+            throw new  UsernameOrPasswordInvaldException("Usuário ou Senha invalidos");
+        }
 
     }
 
