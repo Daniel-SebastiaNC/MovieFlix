@@ -15,10 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/movieflix/auth")
@@ -48,7 +45,10 @@ public class AuthController {
         } catch (BadCredentialsException exception){
             throw new  UsernameOrPasswordInvaldException("Usuário ou Senha invalidos");
         }
-
     }
 
+    @RequestMapping(value = "/validate",method = RequestMethod.HEAD)
+    public ResponseEntity<Void> validateToken(){
+        return ResponseEntity.ok().build();
+    }
 }
